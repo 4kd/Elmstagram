@@ -13,7 +13,7 @@ import Rest
 
 init : Navigation.Location -> (Model, Cmd Msg)
 init location =
-    case UrlParser.parsePath pageParser location of
+    case UrlParser.parseHash pageParser location of
         Just ListOfPosts ->
             initialModel ListOfPosts
                 ! [ Rest.getPosts
@@ -186,16 +186,16 @@ toUrl : Page -> String
 toUrl page =
     case page of
         ListOfPosts ->
-            "/"
+            "#/"
 
         SinglePost postId ->
-            "/view/" ++ postId
+            "#/view/" ++ postId
 
 
-pathParser : Navigation.Location -> Msg
-pathParser location =
+hashParser : Navigation.Location -> Msg
+hashParser location =
     NavigatedTo <|
-        UrlParser.parsePath pageParser location
+        UrlParser.parseHash pageParser location
 
 
 pageParser : Parser (Page -> a) a
